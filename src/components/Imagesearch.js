@@ -1,31 +1,48 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 
-const Imagesearch = () => {
+const Imagesearch = ({setImageList}) => {
   const [search, setSearch] = useState("");
 
+useEffect(()=>{
+handleSearch()
+},[])
+
   function handleSearch(e) {
-    e.preventDefault();
-    console.log(search);
+// when the website load for the first time there is no event occured and
+// and e in the form is empty so e.orevent default give error 
+if(e){
+  e.preventDefault();
+}
+// OR 
+// e && e.preventDefault();
+
+    
+    // console.log(search);
 
     axios
       .get("https://api.unsplash.com//search/photos/", {
         headers: {
           "Accept-Version": "v1",
-          Authorization :
-            "Client-ID I0Pl1CUjwBOTm9U_gg6OPcLNgL58yhQMsaUeIvqSGME",
+          Authorization:`Client-ID ${process.env.REACT_APP_UNSPLASH_ACESS_KEY}`,
         },
         params: {
-            query: search  
-        }
+          query: search || "random", // if search query is emptyuse random
+        },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data.results);
+        setImageList(response.data.results);
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
+
+
+
+
+
   return (
     <div>
       <form onSubmit={handleSearch}>
