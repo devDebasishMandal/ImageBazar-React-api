@@ -7,7 +7,6 @@ const App=()=>{
 
     return (
       <div>
-        <h1>Hi This is ImageBazar</h1>
         <Imagesearch setImageList={setImageList} />
         <Gallary imageList={imageList} />
       </div>
